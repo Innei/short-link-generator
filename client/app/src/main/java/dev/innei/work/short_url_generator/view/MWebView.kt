@@ -8,7 +8,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.alibaba.fastjson.JSON
-import dev.innei.work.short_url_generator.bridge.WebAppInterfaceToast
+import dev.innei.work.short_url_generator.bridge.WebAppInterfaceBridge
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -41,13 +41,13 @@ class MWebView(context: Context) : WebView(context) {
         this.loadUrl("file:///android_asset/index.html")
 
         this.registerInterface()
-        
+
         this.webChromeClient = object : WebChromeClient() {
 
 
             override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
                 consoleMessage?.apply {
-                    Log.d("MyApplication", "${message()} -- From line ${lineNumber()} of ${sourceId()}")
+                    Log.d(MWebView::class.java.name, "${message()} -- From line ${lineNumber()} of ${sourceId()}")
                 }
                 return true
             }
@@ -56,9 +56,9 @@ class MWebView(context: Context) : WebView(context) {
 
 
     fun emitEventByBus(data: Any, eventName: String?) {
-
-        this.evaluateJavascript(
-            """
+        this.post {
+            this.evaluateJavascript(
+                """
             (() => {
                 const bus = window.bus
                 if(bus) {
@@ -68,12 +68,14 @@ class MWebView(context: Context) : WebView(context) {
             })()
             
         """.trimIndent()
-        ) { e ->
-            logger.log(Level.INFO, "[Event: ${eventName ?: "dispatch"}]: ${JSON.toJSONString(data)}")
+            ) { e ->
+                logger.log(Level.INFO, "[Event: ${eventName ?: "dispatch"}]: ${JSON.toJSONString(data)}")
+            }
         }
+
     }
 
     private fun registerInterface() {
-        this.addJavascriptInterface(WebAppInterfaceToast(this.context), "Bridge")
+        this.addJavascriptInterface(WebAppInterfaceBridge(context, this), "Bridge")
     }
 }

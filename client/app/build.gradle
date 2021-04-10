@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -46,7 +47,7 @@ dependencies {
     def room_version = "2.2.6"
 
     implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$room_version"
@@ -54,7 +55,8 @@ dependencies {
     // optional - Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
 
-    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+    implementation('com.squareup.retrofit2:retrofit:2.9.0')
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation('com.alibaba:fastjson:1.2.73')
 //    def qmui_arch_version = '2.0.0-alpha10'
 //    implementation "com.qmuiteam:arch:$qmui_arch_version"

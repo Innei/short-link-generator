@@ -1,0 +1,26 @@
+package dev.innei.work.short_url_generator.model.repository.url.dao
+
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import dev.innei.work.short_url_generator.model.repository.url.URLModel
+
+@Dao
+interface URLDao {
+    @Query("SELECT * FROM urls")
+    fun findAll(): List<URLModel>
+
+    @Query("SELECT * FROM urls WHERE UID = :id LIMIT 1")
+    fun findById(id: Int): URLModel?
+
+    @Insert
+    fun insertAll(vararg urls: URLModel)
+
+    @Insert
+    fun insert(url: URLModel)
+
+    @Delete
+    fun delete(url: URLModel)
+
+}

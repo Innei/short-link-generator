@@ -7,20 +7,34 @@
 </head>
 <body>
 <div id="app">
-    lllll
+    <ul id="data">
 
+    </ul>
+
+    <p style="text-align: center">
+        <button onclick="callApi()">Add</button>
+    </p>
 </div>
 </body>
 
 <script>
     window.onload = () => {
         const $app = document.getElementById("app")
-
+        const $data = document.getElementById("data")
         window.bus.on("dispatch", data => {
-            $app.textContent = data
+
+            console.log("received data: ", data)
+            const $item = document.createElement("li")
+            $item.textContent = data.code
+            $data.appendChild($item)
         })
 
-        console.log($_$.showToast("test"))
+
     }
+
+    function callApi() {
+        $_$.callGeneratorApi("https://baidu.com")
+    }
+
 </script>
 </html>
