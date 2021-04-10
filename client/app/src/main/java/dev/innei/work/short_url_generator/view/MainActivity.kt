@@ -6,14 +6,21 @@ import androidx.appcompat.app.AppCompatActivity
 
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var webView: MWebView
 
     @SuppressLint("SetTextI18n", "SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val webView = MWebView(this)
 
+        webView = MWebView(this)
         setContentView(webView)
 
 
     }
+
+//    override fun onStart() {
+//        super.onStart()
+//        val list = Database.getURLDatabase(applicationContext).urlDao.findAll()
+//        webView.emitEventByBus(list, null)
+//    }
 }
