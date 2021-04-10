@@ -5,6 +5,7 @@ import android.webkit.JavascriptInterface
 import android.widget.Toast
 import dev.innei.work.short_url_generator.model.repository.url.service.URLService
 import dev.innei.work.short_url_generator.view.MWebView
+import kotlin.concurrent.thread
 
 class WebAppInterfaceBridge(private val mContext: Context, private val webView: MWebView) {
 
@@ -20,11 +21,16 @@ class WebAppInterfaceBridge(private val mContext: Context, private val webView: 
 
     @JavascriptInterface
     fun callGeneratorApi(url: String) {
-        val model = URLService.generatorURL(mContext, url)
+
+        thread {
+            kotlin.run {
+                val model = URLService.generatorURL(mContext, url)
 
 
-        if (model != null) {
-            (webView).emitEventByBus(model, null)
+                if (model != null) {
+                    (webView).emitEventByBus(model, null)
+                }
+            }
         }
 
     }
