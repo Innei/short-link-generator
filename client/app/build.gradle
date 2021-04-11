@@ -58,6 +58,8 @@ dependencies {
     implementation('com.squareup.retrofit2:retrofit:2.9.0')
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation('com.alibaba:fastjson:1.2.73')
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
+
 //    def qmui_arch_version = '2.0.0-alpha10'
 //    implementation "com.qmuiteam:arch:$qmui_arch_version"
 //    annotationProcessor "com.qmuiteam:arch-compiler:$qmui_arch_version" // use annotationProcessor if java

@@ -1,5 +1,6 @@
 package dev.innei.work.short_url_generator.model.repository.url
 
+import android.app.Application
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -17,18 +18,22 @@ abstract class URLDatabase : RoomDatabase() {
     companion object {
         private var INSTANCE: URLDatabase? = null
         fun getDatabase(context: Context): URLDatabase {
-
             if (INSTANCE == null) {
                 synchronized(URLDatabase::class.java) {
                     if (INSTANCE == null) {
                         INSTANCE =
-                            Room.databaseBuilder(context.applicationContext, URLDatabase::class.java, "url_database")
+                            Room.databaseBuilder(context, URLDatabase::class.java, "url_database")
                                 .build()
                     }
                 }
             }
             return INSTANCE as URLDatabase
+        }
+
+        fun getDatabase(application: Application): URLDatabase {
+            return getDatabase(application.applicationContext)
 
         }
+
     }
 }

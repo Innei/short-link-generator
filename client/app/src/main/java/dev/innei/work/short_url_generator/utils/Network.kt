@@ -9,7 +9,11 @@ class Network {
     private var retrofit: Retrofit = Builder()
         .baseUrl("http://mbp.cc:8080/api/v1/")
         .addConverterFactory(GsonConverterFactory.create())
+        .callbackExecutor { e ->
+            e.runCatching { }
+        }
         .build()
+
 
     val api = this.retrofit.create(URLApi::class.java)
 
@@ -17,4 +21,3 @@ class Network {
         public val shared = Network()
     }
 }
-

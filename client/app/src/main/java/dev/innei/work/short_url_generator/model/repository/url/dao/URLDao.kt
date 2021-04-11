@@ -1,5 +1,6 @@
 package dev.innei.work.short_url_generator.model.repository.url.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -9,7 +10,7 @@ import dev.innei.work.short_url_generator.model.repository.url.URLModel
 @Dao
 interface URLDao {
     @Query("SELECT * FROM urls")
-    fun findAll(): List<URLModel>
+    fun findAll(): LiveData<List<URLModel>>
 
     @Query("SELECT * FROM urls WHERE UID = :id LIMIT 1")
     fun findById(id: Int): URLModel?

@@ -9,6 +9,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.alibaba.fastjson.JSON
 import dev.innei.work.short_url_generator.bridge.WebAppInterfaceBridge
+import dev.innei.work.short_url_generator.constants.EventType
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -55,21 +56,21 @@ class MWebView(context: Context) : WebView(context) {
     }
 
 
-    fun emitEventByBus(data: Any, eventName: String?) {
+    fun emitEventByBus(data: Any, eventName: EventType = EventType.DISPATCH) {
         this.post {
             this.evaluateJavascript(
                 """
             (() => {
                 const bus = window.bus
                 if(bus) {
-                    bus.emit("${eventName ?: "dispatch"}", ${JSON.toJSONString(data)})
+                    bus.emit("${eventName.name}", ${JSON.toJSONString(data)})
                 }
                 
             })()
             
         """.trimIndent()
             ) { e ->
-                logger.log(Level.INFO, "[Event: ${eventName ?: "dispatch"}]: ${JSON.toJSONString(data)}")
+                logger.log(Level.INFO, "[Event: ${eventName.name}]: ${JSON.toJSONString(data)}")
             }
         }
 
