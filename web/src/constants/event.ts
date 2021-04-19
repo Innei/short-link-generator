@@ -1,0 +1,6 @@
+enum EventType {
+  DISPATCH = 'DISPATCH',
+  FETCH_ALL = 'FETCH_ALL',
+  APPEND = 'APPEND',
+  REMOVE = 'REMOVE',
+}
