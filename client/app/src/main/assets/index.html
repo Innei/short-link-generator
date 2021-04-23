@@ -1,37 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <link rel="icon" href="favicon.ico"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <script src="inject.js"></script>
-    <title></title>
+  <meta charset="UTF-8"/>
+  <link rel="icon" href="favicon.ico"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="inject.js"></script>
+
+  <title>Vite App</title>
+  <script type="module" crossorigin src="assets/index.bdd7f4f4.js"></script>
+  <link rel="modulepreload" href="assets/vendor.f29061ca.js">
+  <link rel="stylesheet" href="assets/index.c0b48bfa.css">
 </head>
 <body>
-<pre id="app" style="height: 50vh; overflow: scroll;white-space: pre-wrap;"></pre>
-<p style="text-align: center">
-    <button onclick="call()">add</button>
+<div id="app"></div>
 
-
-</p>
-
-<pre id="$new">
-
-</pre>
 
 </body>
-
-<script>
-    window.bus.on("FETCH_ALL", data => {
-        app.textContent = JSON.stringify(data)
-    })
-
-    window.bus.on("APPEND", data => {
-        $new.textContent = JSON.stringify(data)
-    })
-
-    function call() {
-        Bridge.callGeneratorApi("https://gg.go")
-    }
-</script>
 </html>
