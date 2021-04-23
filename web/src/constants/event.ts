@@ -1,7 +1,9 @@
-enum EventType {
+export enum EventTypes {
   DISPATCH = 'DISPATCH',
   FETCH_ALL = 'FETCH_ALL',
   APPEND = 'APPEND',
   REMOVE = 'REMOVE',
   REMOVE_MANY = 'REMOVE_MANY',
+  VISIT = 'VISIT',
+  WANT_CREATE = 'WANT_CREATE',
 }

@@ -14,6 +14,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/runtime-core'
+import { EventTypes } from '../constants/event'
 import { EnvStore } from '../store'
 import { useInjector } from '../utils/deps-injection'
 
@@ -26,7 +27,7 @@ export default defineComponent({
     }
     function handleDelete() {
       const list = envStore.selectedItem.value
-      window.bus.emit(EventType.REMOVE_MANY, JSON.stringify(list))
+      window.bus.emit(EventTypes.REMOVE_MANY, JSON.stringify(list))
       envStore.isEditMode.value = false
     }
     return {

@@ -4,8 +4,18 @@
     :style="{ paddingLeft: isEditMode ? '3em' : '' }"
     tabindex="0"
     role="link"
+    @click="handleClick(id)"
   >
-    <span class="checkbox" @click="() => addToSelection(id)" v-if="isEditMode">
+    <span
+      class="checkbox"
+      @click="
+        (e) => {
+          e.stopPropagation()
+          addToSelection(id)
+        }
+      "
+      v-if="isEditMode"
+    >
       <Checkbox :checked="selection.includes(id)"> </Checkbox>
     </span>
     <div class="header">
@@ -25,6 +35,7 @@ import { EnvStore } from '../store'
 import { useInjector } from '../utils/deps-injection'
 import { defineComponent } from 'vue'
 import { Checkbox } from 'ant-design-vue'
+import { EventTypes } from '../constants/event'
 export default defineComponent({
   components: { Checkbox },
   name: 'item',
@@ -67,6 +78,9 @@ export default defineComponent({
       isEditMode: envStore.isEditMode,
       addToSelection,
       selection: envStore.selectedItem,
+      handleClick(id: number) {
+        window.bus.emit(EventTypes.VISIT, id)
+      },
     }
   },
 })

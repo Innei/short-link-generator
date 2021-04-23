@@ -6,9 +6,8 @@
  * @FilePath: /web/utils/observable.ts
  * @MIT
  */
-export enum EventTypes {
-  dispatch = 'dispatch',
-}
+
+import { EventTypes } from 'constants/event'
 
 export class Observable {
   private observers: Record<string, Function[]> = {}

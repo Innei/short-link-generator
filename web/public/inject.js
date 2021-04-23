@@ -20,6 +20,9 @@
     }
 
     emit(event, payload) {
+      if ('Bridge' in window) {
+        window.Bridge.ipcEmitter(event, payload)
+      }
       const queue = this.observers[event]
       if (!queue) {
         return

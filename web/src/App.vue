@@ -35,7 +35,7 @@ export default defineComponent({
     return {
       data,
       handleAdd() {
-        console.log('add')
+        window.bus.emit(EventTypes.WANT_CREATE)
       },
     }
   },
