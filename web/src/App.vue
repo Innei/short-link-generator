@@ -13,6 +13,7 @@ import List from './components/list.vue'
 import FloatButton from './components/float-button.vue'
 import { useInjector, useProvider } from './utils/deps-injection'
 import { EnvStore } from './store'
+import { EventTypes } from './constants/event'
 export default defineComponent({
   name: 'App',
   components: { Header, List, FloatButton },
