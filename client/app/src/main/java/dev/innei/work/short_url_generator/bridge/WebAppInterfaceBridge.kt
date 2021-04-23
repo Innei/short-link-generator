@@ -4,13 +4,13 @@ import android.content.Context
 import android.webkit.JavascriptInterface
 import android.widget.Toast
 import dev.innei.work.short_url_generator.constants.EventType
-import dev.innei.work.short_url_generator.model.repository.url.service.URLService
 import dev.innei.work.short_url_generator.view.MWebView
-import kotlin.concurrent.thread
+import java.util.logging.Level
+import java.util.logging.Logger
 
 class WebAppInterfaceBridge(private val mContext: Context, private val webView: MWebView) {
+    private val logger = Logger.getLogger(WebAppInterfaceBridge::class.java.name)
 
-    /** Show a toast from the web page  */
     @JavascriptInterface
     fun showToast(toast: String): String {
 
@@ -19,19 +19,43 @@ class WebAppInterfaceBridge(private val mContext: Context, private val webView: 
         return toast
     }
 
+//
+//    @JavascriptInterface
+//    fun callGeneratorApi(url: String) {
+//
+//        thread {
+//            kotlin.run {
+//                val model = URLService.generatorURL(mContext, url)
+//
+//                if (model != null) {
+//                    (webView).emitEventByBus(model, EventType.APPEND)
+//                }
+//            }
+//        }
+//    }
 
     @JavascriptInterface
-    fun callGeneratorApi(url: String) {
+    fun ipcEmitter(eventType: String, payload: Any? = null) {
+        logger.log(Level.INFO, "EventType: $eventType")
+        when (val type = eventType) {
+            EventType.WANT_CREATE.name -> {
 
-        thread {
-            kotlin.run {
-                val model = URLService.generatorURL(mContext, url)
+            }
 
-                if (model != null) {
-                    (webView).emitEventByBus(model, EventType.APPEND)
-                }
+            EventType.REMOVE_ALL.name -> {
+
+            }
+
+            EventType.REMOVE.name -> {
+
+            }
+
+            EventType.VISIT.name -> {
+
+            }
+            else -> {
+                logger.log(Level.INFO, "EventType: $eventType")
             }
         }
-
     }
 }
