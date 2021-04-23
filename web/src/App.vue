@@ -1,34 +1,7 @@
 <template>
   <Header />
   <div class="padding"></div>
-  <List
-    :data="[
-      {
-        fullUrl: 'https://111111aaaaaaaaaaaaaa111.com',
-        uid: 1,
-        code: 'https://x.c/1',
-        createdAt: new Date(),
-      },
-      {
-        fullUrl: 'https://111111aaaaaaaaaaaaaa111.com',
-        uid: 2,
-        code: 'https://x.c/1',
-        createdAt: new Date(),
-      },
-      {
-        fullUrl: 'https://111111aaaaaaaaaaaaaa111.com',
-        uid: 3,
-        code: 'https://x.c/1',
-        createdAt: new Date(),
-      },
-      {
-        fullUrl: 'https://111111aaaaaaaaaaaaaa111.com',
-        uid: 4,
-        code: 'https://x.c/1',
-        createdAt: new Date(),
-      },
-    ]"
-  />
+  <List :data="data" />
   <FloatButton @click="handleAdd"></FloatButton>
 </template>
 
@@ -38,14 +11,27 @@ import 'normalize.css'
 import Header from './components/header.vue'
 import List from './components/list.vue'
 import FloatButton from './components/float-button.vue'
+import { useInjector, useProvider } from './utils/deps-injection'
+import { EnvStore } from './store'
 export default defineComponent({
   name: 'App',
   components: { Header, List, FloatButton },
   setup() {
-    const data = ref('')
-    window.bus.on('dispatch', (e) => {
-      data.value = e
-    })
+    useProvider(EnvStore)
+
+    const data = ref(
+      Array.from({ length: 100 }, (_, i) => {
+        return {
+          fullUrl: 'https://111111aaaaaaaaaaaaaa111.com',
+          uid: i,
+          code: 'https://x.c/1',
+          createdAt: new Date(),
+        }
+      }),
+    )
+    // window.bus.on('dispatch', (e) => {
+    //   data.value = e
+    // })
     return {
       data,
       handleAdd() {

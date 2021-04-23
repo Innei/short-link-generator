@@ -5,6 +5,7 @@
         :full-url="item.fullUrl"
         :short-url="item.code"
         :created-at="item.createdAt"
+        :id="item.uid"
         v-for="item in data"
         :key="item.uid"
       />

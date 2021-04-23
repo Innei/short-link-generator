@@ -3,4 +3,5 @@ enum EventType {
   FETCH_ALL = 'FETCH_ALL',
   APPEND = 'APPEND',
   REMOVE = 'REMOVE',
+  REMOVE_MANY = 'REMOVE_MANY',
 }

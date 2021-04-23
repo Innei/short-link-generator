@@ -1,5 +1,13 @@
 <template>
-  <div class="root" tabindex="0" role="link">
+  <div
+    class="root"
+    :style="{ paddingLeft: isEditMode ? '3em' : '' }"
+    tabindex="0"
+    role="link"
+  >
+    <span class="checkbox" @click="() => addToSelection(id)" v-if="isEditMode">
+      <Checkbox :checked="selection.includes(id)"> </Checkbox>
+    </span>
     <div class="header">
       <h2>{{ fullUrl }}</h2>
       <time>
@@ -13,9 +21,12 @@
 </template>
 
 <script lang="ts">
+import { EnvStore } from '../store'
+import { useInjector } from '../utils/deps-injection'
 import { defineComponent } from 'vue'
-
+import { Checkbox } from 'ant-design-vue'
 export default defineComponent({
+  components: { Checkbox },
   name: 'item',
   props: {
     fullUrl: {
@@ -30,15 +41,32 @@ export default defineComponent({
       type: Date,
       required: true,
     },
+    id: {
+      type: Number,
+      required: true,
+    },
   },
   setup() {
     function formatDate(date: string | Date) {
       date = new Date(date)
       return Intl.DateTimeFormat().format(date)
     }
+    const envStore = useInjector(EnvStore)
 
+    function addToSelection(id: number) {
+      const list = envStore.selectedItem
+      const has = list.value.indexOf(+id)
+      console.log(has)
+
+      if (has != -1) {
+        list.value.splice(has, 1)
+      } else list.value.push(+id)
+    }
     return {
       formatDate,
+      isEditMode: envStore.isEditMode,
+      addToSelection,
+      selection: envStore.selectedItem,
     }
   },
 })
@@ -48,6 +76,8 @@ export default defineComponent({
 .root {
   background: #fff;
   padding: 0.5em 1em;
+  transition: padding 0.5s;
+  position: relative;
 }
 .root:focus {
   outline: 0;
@@ -88,5 +118,12 @@ h2 {
 .short {
   opacity: 0.9;
   font-weight: 300;
+}
+
+.checkbox {
+  position: absolute;
+  left: 1em;
+  top: 50%;
+  transform: translateY(-50%);
 }
 </style>
