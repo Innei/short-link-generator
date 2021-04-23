@@ -46,14 +46,17 @@ header {
   top: 0;
   backdrop-filter: blur(25px) saturate(150%) brightness(1.1);
   background-color: hsla(0, 0%, 96%, 0.5);
-  padding: 0.5em 1em;
+  padding: calc(env(safe-area-inset-top) + 0.5em) 1em 0.5em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
   text-align: center;
   overflow: hidden;
   z-index: 2;
 }
 h1 {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 .seq {
   height: 1px;
@@ -75,11 +78,11 @@ h1 {
   transition: opacity 0.5s;
 }
 .edit-btn {
-  left: 0.5em;
+  left: 1em;
   color: #3498db;
 }
 .delete-btn {
-  right: 2.5em;
+  right: 1em;
   color: red;
 }
 
