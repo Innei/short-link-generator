@@ -2,6 +2,8 @@ package dev.innei.work.short_url_generator.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,15 +21,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         webView = MWebView(this)
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                this@MainActivity.init()
+            }
+        }
         setContentView(webView)
 
+
+    }
+
+    fun init() {
         val vm = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         ).get(URLViewModel::class.java)
         val urls = vm.getAllUrls()
+
         urls.observeOnce(Observer { list ->
-            webView.emitEventByBus(JSON.toJSONString(list), eventName = EventType.FETCH_ALL)
+            webView.emitEventByBus((list), eventName = EventType.FETCH_ALL)
         })
     }
 

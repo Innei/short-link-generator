@@ -3,10 +3,24 @@
   <div class="padding"></div>
   <List :data="data" />
   <FloatButton @click="handleAdd"></FloatButton>
+  <a-modal
+    v-model:visible="createDialogVisible"
+    title="创建"
+    ok-text="确认"
+    cancel-text="取消"
+    @ok="handleAdd"
+  >
+    <a-input
+      v-model:value="url"
+      placeholder="输入一个 URL"
+      @change="handleCheck"
+    />
+    <span class="text-red-300" ref="tip"></span>
+  </a-modal>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import 'normalize.css'
 import Header from './components/header.vue'
 import List from './components/list.vue'
@@ -14,29 +28,68 @@ import FloatButton from './components/float-button.vue'
 import { useInjector, useProvider } from './utils/deps-injection'
 import { EnvStore } from './store'
 import { EventTypes } from './constants/event'
+import { UrlModel } from 'models'
+import { Modal } from 'ant-design-vue'
 export default defineComponent({
   name: 'App',
   components: { Header, List, FloatButton },
   setup() {
     useProvider(EnvStore)
+    const data = ref<UrlModel[]>([])
+    const tip = ref<HTMLSpanElement>()
+    const url = ref('https://innei.ren')
+    const createDialogVisible = ref(false)
+    const handler_FETCH_ALL = (payload) => {
+      // console.log(payload)
+      data.value = payload
+    }
+    const handler_APPEND = (payload) => {
+      const newData = payload as UrlModel
+      data.value.unshift(newData)
+    }
+    const handler_REMOVE_MANY = (payload) => {
+      // console.log(payload)
+      data.value = data.value.filter(({ uid }) => !payload.includes(uid))
+    }
+    onMounted(() => {
+      window.bus.on(EventTypes.FETCH_ALL, handler_FETCH_ALL)
+      window.bus.on(EventTypes.APPEND, handler_APPEND)
+      window.bus.on(EventTypes.REMOVE_MANY, handler_REMOVE_MANY)
+    })
 
-    const data = ref(
-      Array.from({ length: 100 }, (_, i) => {
-        return {
-          fullUrl: 'https://111111aaaaaaaaaaaaaa111.com',
-          uid: i,
-          code: 'https://x.c/1',
-          createdAt: new Date(),
-        }
-      }),
-    )
+    onUnmounted(() => {
+      window.bus.off(EventTypes.FETCH_ALL, handler_FETCH_ALL)
+      window.bus.off(EventTypes.APPEND, handler_APPEND)
+      window.bus.off(EventTypes.REMOVE_MANY, handler_REMOVE_MANY)
+    })
+
     // window.bus.on('dispatch', (e) => {
     //   data.value = e
     // })
     return {
       data,
+      tip,
+      createDialogVisible,
+      url,
       handleAdd() {
-        window.bus.emit(EventTypes.WANT_CREATE)
+        if (!createDialogVisible.value) {
+          createDialogVisible.value = true
+        } else {
+          if (tip.value?.innerText) {
+            return
+          }
+          createDialogVisible.value = false
+          window.bus.emit(EventTypes.WANT_CREATE, { data: url.value })
+        }
+      },
+      handleCheck() {
+        const _url = url.value
+        try {
+          new URL(_url)
+          tip.value!.innerText = ''
+        } catch {
+          tip.value!.innerText = 'URL 有误'
+        }
       },
     }
   },

@@ -27,7 +27,7 @@ export default defineComponent({
     }
     function handleDelete() {
       const list = envStore.selectedItem.value
-      window.bus.emit(EventTypes.REMOVE_MANY, JSON.stringify(list))
+      window.bus.emit(EventTypes.REMOVE_MANY, list)
       envStore.isEditMode.value = false
     }
     return {

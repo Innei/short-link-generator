@@ -19,9 +19,9 @@
       }
     }
 
-    emit(event, payload) {
-      if ('Bridge' in window) {
-        window.Bridge.ipcEmitter(event, payload)
+    emit(event, payload, isServer = false) {
+      if ('Bridge' in window && !isServer) {
+        window.Bridge.ipcEmitter(event, JSON.stringify(payload))
       }
       const queue = this.observers[event]
       if (!queue) {

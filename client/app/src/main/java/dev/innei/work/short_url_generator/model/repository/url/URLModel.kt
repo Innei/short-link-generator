@@ -12,7 +12,7 @@ data class URLModel(
     @PrimaryKey(autoGenerate = true)
 
     @SerializedName("uid")
-    val uid: Int,
+    var uid: Int,
 
     @SerializedName("fullUrl")
     @ColumnInfo(name = "full_url")

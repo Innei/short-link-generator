@@ -22,7 +22,8 @@ class URLService {
                     val body = res.body()
                     if (body != null) {
                         val model = URLModel(rawURL, body.url, Date())
-                        db.urlDao.insert(model)
+                        val id = db.urlDao.insert(model)
+                        model.uid = id.toInt()
                         return model
                     } else {
                         Log.d(URLService::class.java.name, "body is empty.")

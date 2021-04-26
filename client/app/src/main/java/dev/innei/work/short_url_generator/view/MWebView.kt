@@ -8,38 +8,47 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.alibaba.fastjson.JSON
+import dev.innei.work.short_url_generator.BuildConfig
 import dev.innei.work.short_url_generator.bridge.WebAppInterfaceBridge
 import dev.innei.work.short_url_generator.constants.EventType
 import java.util.logging.Level
 import java.util.logging.Logger
 
 
-@SuppressLint("SetJavaScriptEnabled")
+@SuppressLint("SetJavaScriptEnabled", "ViewConstructor")
 class MWebView(context: Context) : WebView(context) {
     private val logger: Logger = Logger.getLogger("logger")
 
+
     init {
-        this.webViewClient = object : WebViewClient() {
-//            override fun onLoadResource(view: WebView?, url: String?) {
-//                super.onLoadResource(view, url)
-//                Log.d("onLoadResource", "----------------------")
-//            }
-
-//            override fun onPageFinished(view: WebView?, url: String?) {
-//                Log.d("onPageFinished", "----------------------")
-//                super.onPageFinished(view, url)
+//        this.webViewClient = object : WebViewClient() {
+////            override fun onLoadResource(view: WebView?, url: String?) {
+////                super.onLoadResource(view, url)
+////                Log.d("onLoadResource", "----------------------")
+////            }
 //
-//            }
-
-//            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-//                Log.d("onPageStarted", "----------------------")
+////            override fun onPageFinished(view: WebView?, url: String?) {
+////                Log.d("onPageFinished", "----------------------")
+////                super.onPageFinished(view, url)
+////
+//////                this@MWebView.emitEventByBus(,EventType.FETCH_ALL)
+////
+////            }
 //
-//                super.onPageStarted(view, url, favicon)
-//            }
-        }
+////            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+////                Log.d("onPageStarted", "----------------------")
+////
+////                super.onPageStarted(view, url, favicon)
+////            }
+//        }
 
         this.settings.javaScriptEnabled = true
-        this.loadUrl("file:///android_asset/index.html")
+        if (BuildConfig.DEBUG) {
+            this.loadUrl("http://192.168.31.19:3000/")
+        } else {
+
+            this.loadUrl("file:///android_asset/index.html")
+        }
 
         this.registerInterface()
 
@@ -63,7 +72,7 @@ class MWebView(context: Context) : WebView(context) {
             (() => {
                 const bus = window.bus
                 if(bus) {
-                    bus.emit("${eventName.name}", ${JSON.toJSONString(data)})
+                    bus.emit("${eventName.name}", ${JSON.toJSONString(data)}, true)
                 }
                 
             })()

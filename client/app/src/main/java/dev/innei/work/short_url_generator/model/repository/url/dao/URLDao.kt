@@ -19,9 +19,12 @@ interface URLDao {
     fun insertAll(vararg urls: URLModel)
 
     @Insert
-    fun insert(url: URLModel)
+    fun insert(url: URLModel): Long
 
     @Delete
     fun delete(url: URLModel)
+
+    @Query("DELETE FROM urls WHERE uid = :id")
+    fun deleteById(id: Int)
 
 }

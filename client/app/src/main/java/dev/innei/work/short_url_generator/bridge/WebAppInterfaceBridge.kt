@@ -3,12 +3,22 @@ package dev.innei.work.short_url_generator.bridge
 import android.content.Context
 import android.webkit.JavascriptInterface
 import android.widget.Toast
+import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONArray
+import com.alibaba.fastjson.JSONObject
 import dev.innei.work.short_url_generator.constants.EventType
+import dev.innei.work.short_url_generator.model.repository.url.URLDatabase
+import dev.innei.work.short_url_generator.model.repository.url.service.URLService
 import dev.innei.work.short_url_generator.view.MWebView
 import java.util.logging.Level
 import java.util.logging.Logger
+import kotlin.concurrent.thread
 
-class WebAppInterfaceBridge(private val mContext: Context, private val webView: MWebView) {
+class WebAppInterfaceBridge(
+    private val mContext: Context,
+    private val webView: MWebView,
+
+    ) {
     private val logger = Logger.getLogger(WebAppInterfaceBridge::class.java.name)
 
     @JavascriptInterface
@@ -19,27 +29,30 @@ class WebAppInterfaceBridge(private val mContext: Context, private val webView: 
         return toast
     }
 
-//
-//    @JavascriptInterface
-//    fun callGeneratorApi(url: String) {
-//
-//        thread {
-//            kotlin.run {
-//                val model = URLService.generatorURL(mContext, url)
-//
-//                if (model != null) {
-//                    (webView).emitEventByBus(model, EventType.APPEND)
-//                }
-//            }
-//        }
-//    }
 
     @JavascriptInterface
-    fun ipcEmitter(eventType: String, payload: Any? = null) {
-        logger.log(Level.INFO, "EventType: $eventType")
+    fun callGeneratorApi(url: String) {
+
+        thread {
+            kotlin.run {
+                val model = URLService.generatorURL(mContext, url)
+
+                if (model != null) {
+                    (webView).emitEventByBus(model, EventType.APPEND)
+                }
+            }
+        }
+    }
+
+    @JavascriptInterface
+    fun ipcEmitter(eventType: String, payload: String? = "") {
+        logger.log(Level.INFO, "EventType: $eventType, payload: $payload")
+        val dao = URLDatabase.getDatabase(context = mContext).urlDao
+        val data = JSON.parse(payload)
         when (val type = eventType) {
             EventType.WANT_CREATE.name -> {
-
+                val url = (data as JSONObject).getString("data")
+                callGeneratorApi(url)
             }
 
             EventType.REMOVE_ALL.name -> {
@@ -48,6 +61,14 @@ class WebAppInterfaceBridge(private val mContext: Context, private val webView: 
 
             EventType.REMOVE.name -> {
 
+            }
+
+            EventType.REMOVE_MANY.name -> {
+                (data as JSONArray).forEach { id ->
+                    logger.log(Level.INFO, "$id")
+                    dao.deleteById(id as Int)
+                }
+                this.webView.emitEventByBus(data, EventType.REMOVE_MANY)
             }
 
             EventType.VISIT.name -> {
@@ -59,3 +80,8 @@ class WebAppInterfaceBridge(private val mContext: Context, private val webView: 
         }
     }
 }
+//
+//
+//data class DataString(val data: String) {
+//
+//}
