@@ -28,12 +28,33 @@
   </div>
 
   <div class="seq"></div>
+  <a-modal
+    v-model:visible="dialogVisible"
+    title="查看"
+    ok-text="确认"
+    cancel-text="取消"
+    @ok="() => (dialogVisible = false)"
+  >
+    <p>
+      <a
+        :href="fullUrl"
+        target="_blank"
+        @click="(e) => handleOpenLink(fullUrl, e)"
+        >原地址: {{ fullUrl }}</a
+      >
+    </p>
+    <p>
+      <a :href="shortUrl" @click="(e) => handleOpenLink(shortUrl, e)"
+        >短地址: {{ shortUrl }}</a
+      >
+    </p>
+  </a-modal>
 </template>
 
 <script lang="ts">
 import { EnvStore } from '../store'
 import { useInjector } from '../utils/deps-injection'
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { Checkbox } from 'ant-design-vue'
 import { EventTypes } from '../constants/event'
 export default defineComponent({
@@ -73,6 +94,7 @@ export default defineComponent({
         list.value.splice(has, 1)
       } else list.value.push(+id)
     }
+    const dialogVisible = ref(false)
     return {
       formatDate,
       isEditMode: envStore.isEditMode,
@@ -80,7 +102,17 @@ export default defineComponent({
       selection: envStore.selectedItem,
       handleClick(id: number) {
         window.bus.emit(EventTypes.VISIT, id)
+        dialogVisible.value = true
       },
+      handleOpenLink(link: string, e: MouseEvent) {
+        if (window.Bridge) {
+          e.stopPropagation()
+          e.preventDefault()
+          window.Bridge.openLink(link)
+        }
+      },
+
+      dialogVisible,
     }
   },
 })

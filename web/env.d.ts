@@ -9,4 +9,8 @@ declare class EventBus {
 
 declare interface Window {
   bus: EventBus
+  Bridge?: {
+    openLink: (url: string) => void
+    showToast: (msg: string) => void
+  }
 }

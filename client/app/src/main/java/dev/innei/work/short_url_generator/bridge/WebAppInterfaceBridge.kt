@@ -1,8 +1,13 @@
 package dev.innei.work.short_url_generator.bridge
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.view.View
 import android.webkit.JavascriptInterface
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
@@ -10,9 +15,11 @@ import dev.innei.work.short_url_generator.constants.EventType
 import dev.innei.work.short_url_generator.model.repository.url.URLDatabase
 import dev.innei.work.short_url_generator.model.repository.url.service.URLService
 import dev.innei.work.short_url_generator.view.MWebView
+import dev.innei.work.short_url_generator.view.MainActivity
 import java.util.logging.Level
 import java.util.logging.Logger
 import kotlin.concurrent.thread
+
 
 class WebAppInterfaceBridge(
     private val mContext: Context,
@@ -27,6 +34,14 @@ class WebAppInterfaceBridge(
         Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show()
 
         return toast
+    }
+
+    @JavascriptInterface
+    fun openLink(url: String) {
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
+        (webView.context as MainActivity).startActivity(i)
+
     }
 
 

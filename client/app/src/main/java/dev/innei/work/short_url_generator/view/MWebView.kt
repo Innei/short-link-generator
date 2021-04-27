@@ -2,6 +2,7 @@ package dev.innei.work.short_url_generator.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import android.webkit.ConsoleMessage
 import android.webkit.WebChromeClient
@@ -45,6 +46,7 @@ class MWebView(context: Context) : WebView(context) {
         this.settings.javaScriptEnabled = true
         if (BuildConfig.DEBUG) {
             this.loadUrl("http://192.168.31.19:3000/")
+            setWebContentsDebuggingEnabled(true)
         } else {
 
             this.loadUrl("file:///android_asset/index.html")
@@ -62,6 +64,8 @@ class MWebView(context: Context) : WebView(context) {
                 return true
             }
         }
+
+
     }
 
 
