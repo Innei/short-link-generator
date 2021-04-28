@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class Network {
     private var retrofit: Retrofit = Builder()
-        .baseUrl("http://mbp.cc:8080/api/v1/")
+        .baseUrl("http://1.116.103.55:80/api/v1/")
         .addConverterFactory(GsonConverterFactory.create())
         .callbackExecutor { e ->
             e.runCatching { }
