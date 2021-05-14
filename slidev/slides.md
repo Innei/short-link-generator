@@ -609,7 +609,7 @@ p {
 # Server
 
 其中最为核心的短链接生成原理如下：
-利用 Mysql 的自增 ID，将此 ID 与原网址进行一一映射，最后对该 ID 进行 Base64 转换，即可得到转换后的短链接码，接口逻辑函数如下:
+利用 Mysql 的自增 ID，将此 ID 与原网址进行一一映射，最后对该 ID 进行 Base62 转换，即可得到转换后的短链接码，接口逻辑函数如下:
 
 <style>
 .vue-monaco, pre {
@@ -648,6 +648,7 @@ func Long2ShortURL(c *gin.Context) {
 	global.LOGGER.Info("短链生成成功", zap.String("短链", urlCode))
 }
 ```
+
 
 ---
 layout: center
