@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "dependencies": {
+    "@slidev/cli": "^0.8.1",
+    "@slidev/theme-seriph": "*",
+    "monaco": "1.201704190613.0",
+    "monaco-languages": "2.4.0",
+    "slidev-theme-geist": "^0.3.0"
+  },
+  "name": "slidev"
+}

@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         }
         setContentView(webView)
 
-
     }
 
     fun init() {

@@ -26,7 +26,6 @@ data class URLModel(
     @SerializedName("created_at")
     val createdAt: Date
 
-
 ) {
     constructor(fullUrl: String, code: String, createdAt: Date) : this(0, fullUrl, code, createdAt)
 }
