@@ -50,7 +50,6 @@ FastJson 是阿里巴巴的开源 JSON 解析库，它可以解析 JSON 格式�
 
 持久层使用 Room + SQLite 3
 
-
 <style>
 .vue-monaco, pre {
   
@@ -528,7 +527,13 @@ strong {
 
 # Diagrams
 
-![](assets/image.png)
+<style>
+p {
+  opacity: 1!important
+}
+</style>
+
+![](https://github.com/Innei/short-link-generator/blob/master/slidev/assets/image.png?raw=true)
 
 ---
 

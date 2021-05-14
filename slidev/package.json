@@ -12,5 +12,8 @@
     "monaco-languages": "2.4.0",
     "slidev-theme-geist": "^0.3.0"
   },
-  "name": "slidev"
+  "name": "slidev",
+  "devDependencies": {
+    "gh-pages": "3.1.0"
+  }
 }
